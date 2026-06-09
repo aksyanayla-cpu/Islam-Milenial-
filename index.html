@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pendidikan Islam untuk Generasi Milenial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #EDE7F6;
+      color: #4A148C;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ===== COLOR TOKENS ===== */
+    :root {
+      --bg-main:      #EDE7F6;
+      --bg-alt:       #F3E5F5;
+      --bg-card:      #FAFAFF;
+      --purple-dark:  #4A148C;
+      --purple-mid:   #6A1B9A;
+      --purple-accent:#7B1FA2;
+      --purple-light: #CE93D8;
+      --purple-pale:  #E1BEE7;
+      --white:        #FFFFFF;
+      --shadow:       rgba(74,20,140,0.12);
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 999;
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: transparent;
+      transition: background 0.4s, box-shadow 0.4s, padding 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(237,231,246,0.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px var(--shadow);
+      padding: 10px 40px;
+    }
+    .nav-logo {
+      font-size: 1.2rem; font-weight: 700; color: var(--purple-dark);
+      letter-spacing: 0.5px; text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-logo span.crescent { font-size: 1.4rem; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--purple-mid);
+      font-size: 0.875rem; font-weight: 500;
+      position: relative; padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: var(--purple-accent);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--purple-dark); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-toggle span { width: 24px; height: 2px; background: var(--purple-dark); border-radius: 2px; transition: all 0.3s; }
+
+    /* ===== LAYER 1 — HERO ===== */
+    #hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #EDE7F6 0%, #D1C4E9 50%, #CE93D8 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; padding: 120px 40px 80px;
+      text-align: center;
+    }
+    /* Geometric Islamic ornament — pure CSS */
+    .hero-ornament {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; opacity: 0.08;
+      background-image:
+        repeating-linear-gradient(45deg, var(--purple-dark) 0, var(--purple-dark) 1px, transparent 0, transparent 50%),
+        repeating-linear-gradient(-45deg, var(--purple-dark) 0, var(--purple-dark) 1px, transparent 0, transparent 50%);
+      background-size: 40px 40px;
+    }
+    .hero-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1.5px solid rgba(106,27,154,0.15);
+    }
+    .hero-ring.r1 { width: 500px; height: 500px; top: -120px; right: -120px; }
+    .hero-ring.r2 { width: 320px; height: 320px; top: -60px; right: -60px; }
+    .hero-ring.r3 { width: 400px; height: 400px; bottom: -150px; left: -100px; }
+    .hero-content { position: relative; z-index: 2; max-width: 760px; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(123,31,162,0.12);
+      border: 1px solid rgba(123,31,162,0.25);
+      color: var(--purple-accent);
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; padding: 6px 18px; border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .hero-arabic {
+      font-family: 'Amiri', serif;
+      font-size: 2.2rem; color: var(--purple-mid);
+      margin-bottom: 12px; direction: rtl;
+      opacity: 0.85;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700; color: var(--purple-dark);
+      line-height: 1.25; margin-bottom: 20px;
+    }
+    .hero-title em { font-style: normal; color: var(--purple-accent); }
+    .hero-subtitle {
+      font-size: 1rem; color: var(--purple-mid);
+      max-width: 560px; margin: 0 auto 36px;
+      font-weight: 300;
+    }
+    .hero-btn {
+      display: inline-block; padding: 14px 36px;
+      background: var(--purple-accent); color: #fff;
+      font-weight: 600; font-size: 0.9rem; border-radius: 100px;
+      text-decoration: none; letter-spacing: 0.5px;
+      box-shadow: 0 8px 24px rgba(123,31,162,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(123,31,162,0.45); }
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: var(--purple-mid); font-size: 0.75rem; opacity: 0.6;
+      animation: bounce 2s infinite;
+    }
+    .scroll-hint::after {
+      content: ''; width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--purple-mid), transparent);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ===== SHARED SECTION STYLES ===== */
+    section { padding: 90px 40px; }
+    .section-label {
+      display: inline-block; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--purple-accent);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 700;
+      color: var(--purple-dark); margin-bottom: 16px; line-height: 1.3;
+    }
+    .section-desc {
+      font-size: 0.95rem; color: var(--purple-mid);
+      max-width: 580px; font-weight: 300; margin-bottom: 56px;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .divider {
+      width: 60px; height: 3px; border-radius: 2px;
+      background: linear-gradient(to right, var(--purple-accent), var(--purple-light));
+      margin: 16px 0 24px;
+    }
+
+    /* ===== LAYER 2 — TENTANG / PENDAHULUAN ===== */
+    #tentang { background: var(--bg-alt); }
+    .tentang-grid {
+      display: grid; grid-template-columns: 1fr; gap: 0;
+      align-items: start; max-width: 760px;
+    }
+    .tentang-text p {
+      font-size: 0.95rem; color: var(--purple-mid);
+      margin-bottom: 16px; font-weight: 300;
+    }
+    .tentang-text strong { color: var(--purple-dark); font-weight: 600; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--purple-pale);
+      border-radius: 16px; padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 4px 16px var(--shadow);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px var(--shadow); }
+    .stat-card .number {
+      font-size: 2rem; font-weight: 700; color: var(--purple-accent);
+      line-height: 1;
+    }
+    .stat-card .label { font-size: 0.8rem; color: var(--purple-mid); margin-top: 6px; }
+    .stat-card.full { grid-column: span 2; }
+
+    /* ===== LAYER 3 — METODE PEMBELAJARAN ===== */
+    #metode { background: var(--bg-main); }
+    .metode-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .metode-card {
+      background: var(--bg-card);
+      border: 1px solid var(--purple-pale);
+      border-radius: 20px; padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 4px 16px var(--shadow);
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .metode-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 4px;
+      background: linear-gradient(to right, var(--purple-accent), var(--purple-light));
+    }
+    .metode-card:hover { transform: translateY(-6px); box-shadow: 0 14px 32px var(--shadow); }
+    .metode-icon { font-size: 2.4rem; margin-bottom: 16px; display: block; }
+    .metode-card h3 {
+      font-size: 1rem; font-weight: 600; color: var(--purple-dark);
+      margin-bottom: 10px;
+    }
+    .metode-card p { font-size: 0.85rem; color: var(--purple-mid); font-weight: 300; line-height: 1.6; }
+
+    /* ===== LAYER 4 — MATERI UTAMA ===== */
+    #materi { background: var(--bg-alt); }
+    .accordion { display: flex; flex-direction: column; gap: 12px; }
+    .acc-item {
+      background: var(--bg-card);
+      border: 1px solid var(--purple-pale);
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 2px 10px var(--shadow);
+    }
+    .acc-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 24px; cursor: pointer;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .acc-header:hover { background: rgba(206,147,216,0.12); }
+    .acc-header h3 {
+      font-size: 1rem; font-weight: 600; color: var(--purple-dark);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .acc-header h3 span.acc-icon { font-size: 1.3rem; }
+    .acc-arrow {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--purple-pale);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; color: var(--purple-accent);
+      transition: transform 0.3s, background 0.2s;
+      flex-shrink: 0;
+    }
+    .acc-item.open .acc-arrow { transform: rotate(180deg); background: var(--purple-accent); color: #fff; }
+    .acc-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s;
+      padding: 0 24px;
+    }
+    .acc-item.open .acc-body { max-height: 400px; padding: 0 24px 24px; }
+    .acc-body p { font-size: 0.9rem; color: var(--purple-mid); font-weight: 300; line-height: 1.75; }
+    .acc-body ul { margin-top: 10px; padding-left: 18px; }
+    .acc-body ul li {
+      font-size: 0.88rem; color: var(--purple-mid);
+      margin-bottom: 6px; font-weight: 300;
+    }
+
+    /* ===== LAYER 5 — QUOTES ISLAMI ===== */
+    #quotes { background: linear-gradient(135deg, #4A148C 0%, #7B1FA2 100%); }
+    #quotes .section-label { color: var(--purple-pale); }
+    #quotes .section-title { color: #fff; }
+    #quotes .divider { background: linear-gradient(to right, #CE93D8, #fff); }
+    .quotes-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .quote-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px; padding: 32px 28px;
+      backdrop-filter: blur(8px);
+      transition: transform 0.25s, background 0.2s;
+    }
+    .quote-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.13);
+    }
+    .quote-arabic {
+      font-family: 'Amiri', serif;
+      font-size: 1.6rem; color: #E1BEE7;
+      text-align: right; direction: rtl;
+      margin-bottom: 16px; line-height: 1.9;
+    }
+    .quote-line {
+      width: 40px; height: 2px; background: var(--purple-light);
+      margin-bottom: 14px;
+    }
+    .quote-translation {
+      font-size: 0.88rem; color: rgba(255,255,255,0.85);
+      font-style: italic; line-height: 1.7; margin-bottom: 12px;
+    }
+    .quote-source {
+      font-size: 0.75rem; color: var(--purple-pale);
+      font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    /* ===== LAYER 6 — TANTANGAN & SOLUSI ===== */
+    #tantangan { background: var(--bg-main); }
+    .ts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .ts-col { border-radius: 20px; padding: 36px 32px; }
+    .ts-col.tantangan-col {
+      background: rgba(74,20,140,0.06);
+      border: 1px solid var(--purple-pale);
+    }
+    .ts-col.solusi-col {
+      background: linear-gradient(135deg, rgba(123,31,162,0.1), rgba(206,147,216,0.15));
+      border: 1px solid rgba(123,31,162,0.2);
+    }
+    .ts-col h3 {
+      font-size: 1.05rem; font-weight: 700; color: var(--purple-dark);
+      margin-bottom: 24px; display: flex; align-items: center; gap: 10px;
+    }
+    .ts-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .ts-list li {
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 0.88rem; color: var(--purple-mid); font-weight: 300;
+    }
+    .ts-list li .bullet {
+      width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; flex-shrink: 0; margin-top: 1px;
+    }
+    .tantangan-col .bullet { background: rgba(74,20,140,0.12); color: var(--purple-accent); }
+    .solusi-col .bullet { background: var(--purple-accent); color: #fff; }
+
+    /* ===== LAYER 7 — FOOTER ===== */
+    footer {
+      background: var(--purple-dark);
+      padding: 60px 40px 40px;
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+    }
+    .footer-arabic {
+      font-family: 'Amiri', serif;
+      font-size: 1.8rem; color: var(--purple-pale);
+      margin-bottom: 8px; direction: rtl;
+    }
+    .footer-logo-text {
+      font-size: 1.4rem; font-weight: 700; color: #fff;
+      margin-bottom: 8px; letter-spacing: 1px;
+    }
+    .footer-tagline {
+      font-size: 0.85rem; color: rgba(255,255,255,0.5);
+      margin-bottom: 40px;
+    }
+    .footer-divider {
+      width: 60px; height: 2px;
+      background: linear-gradient(to right, var(--purple-light), transparent);
+      margin: 0 auto 40px;
+    }
+    .footer-info {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 32px; max-width: 700px; margin: 0 auto 40px;
+      text-align: left;
+    }
+    .footer-info-item .fi-label {
+      font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--purple-pale); margin-bottom: 4px; font-weight: 600;
+    }
+    .footer-info-item .fi-value {
+      font-size: 0.9rem; color: #fff; font-weight: 500;
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 24px; font-size: 0.78rem;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* ===== ORNAMENT SEPARATOR ===== */
+    .sep {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; padding: 0 40px; overflow: hidden;
+      height: 40px; background: var(--bg-alt);
+    }
+    .sep-line { flex: 1; height: 1px; background: var(--purple-pale); }
+    .sep-diamond {
+      width: 8px; height: 8px;
+      background: var(--purple-accent); transform: rotate(45deg);
+    }
+    .sep-small { width: 4px; height: 4px; background: var(--purple-light); transform: rotate(45deg); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      section { padding: 70px 20px; }
+      nav { padding: 14px 20px; }
+      nav.scrolled { padding: 10px 20px; }
+      .nav-links { display: none; flex-direction: column; gap: 16px; position: fixed;
+        top: 0; right: -100%; width: 70%; height: 100vh;
+        background: rgba(237,231,246,0.98); padding: 80px 30px 30px;
+        transition: right 0.3s; box-shadow: -4px 0 20px var(--shadow); }
+      .nav-links.open { right: 0; display: flex; }
+      .nav-toggle { display: flex; }
+      .tentang-grid { grid-template-columns: 1fr; gap: 32px; }
+      .ts-grid { grid-template-columns: 1fr; }
+      .footer-info { grid-template-columns: 1fr; gap: 20px; }
+      .hero-arabic { font-size: 1.6rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ===== FADE-IN ON SCROLL ===== */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">
+      <span class="crescent">☽</span> Islam Milenial
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#tentang">Tentang</a></li>
+      <li><a href="#metode">Metode</a></li>
+      <li><a href="#materi">Materi</a></li>
+      <li><a href="#quotes">Inspirasi</a></li>
+      <li><a href="#tantangan">Tantangan</a></li>
+      <li><a href="#footer">Info</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ============ LAYER 1 — HERO ============ -->
+  <section id="hero">
+    <div class="hero-ornament"></div>
+    <div class="hero-ring r1"></div>
+    <div class="hero-ring r2"></div>
+    <div class="hero-ring r3"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Tugas UAS · Pendidikan Agama Islam</div>
+      <div class="hero-arabic">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+      <h1 class="hero-title">
+        Pendidikan Pembelajaran Islam<br>untuk <em>Generasi Milenial</em>
+      </h1>
+      <p class="hero-subtitle">
+        Menjembatani nilai-nilai Islam yang abadi dengan realitas kehidupan digital generasi muda — membangun insan berakhlak mulia di era yang terus berubah.
+      </p>
+      <a href="#tentang" class="hero-btn">Jelajahi Sekarang</a>
+    </div>
+    <div class="scroll-hint">Gulir ke bawah</div>
+  </section>
+
+  <!-- Separator -->
+  <div class="sep">
+    <div class="sep-line"></div>
+    <div class="sep-small"></div>
+    <div class="sep-diamond"></div>
+    <div class="sep-small"></div>
+    <div class="sep-line"></div>
+  </div>
+
+  <!-- ============ LAYER 2 — TENTANG ============ -->
+  <section id="tentang">
+    <div class="container">
+      <div class="tentang-grid fade-up">
+        <div class="tentang-left">
+          <span class="section-label">Pendahuluan</span>
+          <h2 class="section-title">Mengapa Islam Penting bagi Milenial?</h2>
+          <div class="divider"></div>
+          <div class="tentang-text">
+            <p>Generasi milenial dan Gen Z tumbuh di tengah arus informasi yang deras, teknologi yang semakin canggih, dan perubahan sosial yang dinamis. Di sinilah <strong>pendidikan Islam</strong> memegang peranan krusial sebagai kompas moral dan spiritual.</p>
+            <p>Islam bukan sekadar ritual ibadah — Islam adalah <strong>sistem kehidupan yang komprehensif</strong> (diin) yang mengatur hubungan manusia dengan Allah, sesama manusia, dan alam semesta. Pemahaman yang benar tentang Islam akan membentuk karakter milenial yang tidak hanya cerdas secara intelektual, tetapi juga matang secara spiritual.</p>
+            <p>Pendidikan Islam yang relevan harus mampu <strong>menjawab tantangan zaman</strong>: hoaks, radikalisme digital, krisis identitas, hingga degradasi moral yang sering menjangkiti generasi muda masa kini.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="sep" style="background: var(--bg-main);">
+    <div class="sep-line"></div>
+    <div class="sep-small"></div>
+    <div class="sep-diamond"></div>
+    <div class="sep-small"></div>
+    <div class="sep-line"></div>
+  </div>
+
+  <!-- ============ LAYER 3 — METODE ============ -->
+  <section id="metode">
+    <div class="container">
+      <span class="section-label">Inovasi Belajar</span>
+      <h2 class="section-title">Metode Pembelajaran Islam Modern</h2>
+      <div class="divider"></div>
+      <p class="section-desc">Pendidikan Islam tidak harus membosankan. Berikut metode yang relevan dan efektif bagi generasi milenial yang akrab dengan teknologi.</p>
+      <div class="metode-grid fade-up">
+        <div class="metode-card">
+          <span class="metode-icon">📱</span>
+          <h3>E-Learning Islami</h3>
+          <p>Platform belajar online seperti Ruang Guru Ngaji, Rumah Quran digital, dan kelas Al-Quran virtual yang bisa diakses kapan saja dan di mana saja.</p>
+        </div>
+        <div class="metode-card">
+          <span class="metode-icon">🎙️</span>
+          <h3>Podcast & Video Kajian</h3>
+          <p>Konten kajian Islam di YouTube, Spotify, dan podcast yang dikemas ringan namun penuh substansi — mudah dikonsumsi saat commuting atau bersantai.</p>
+        </div>
+        <div class="metode-card">
+          <span class="metode-icon">📲</span>
+          <h3>Dakwah Media Sosial</h3>
+          <p>Konten Islami berbasis infografis, short video, dan narasi singkat di Instagram, TikTok, dan Twitter yang menjangkau jutaan milenial setiap harinya.</p>
+        </div>
+        <div class="metode-card">
+          <span class="metode-icon">📗</span>
+          <h3>Gamifikasi Al-Quran</h3>
+          <p>Aplikasi menghafal dan memahami Al-Quran dengan sistem poin, level, dan reward yang membuat belajar terasa menyenangkan bagi generasi yang terbiasa dengan gim.</p>
+        </div>
+        <div class="metode-card">
+          <span class="metode-icon">💬</span>
+          <h3>Diskusi Komunitas Online</h3>
+          <p>Forum, grup WhatsApp/Telegram, dan komunitas Discord yang membahas isu-isu keislaman kontemporer dengan pendekatan dialogis dan terbuka.</p>
+        </div>
+        <div class="metode-card">
+          <span class="metode-icon">📖</span>
+          <h3>E-Book & Literasi Digital</h3>
+          <p>Buku-buku Islam dalam format digital yang mudah diakses, termasuk tafsir Al-Quran interaktif dan kitab klasik yang telah diterjemahkan secara modern.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sep" style="background: var(--bg-alt);">
+    <div class="sep-line"></div>
+    <div class="sep-small"></div>
+    <div class="sep-diamond"></div>
+    <div class="sep-small"></div>
+    <div class="sep-line"></div>
+  </div>
+
+  <!-- ============ LAYER 4 — MATERI ============ -->
+  <section id="materi">
+    <div class="container">
+      <span class="section-label">Kurikulum Inti</span>
+      <h2 class="section-title">Materi Utama Pendidikan Islam</h2>
+      <div class="divider"></div>
+      <p class="section-desc">Empat pilar ilmu Islam yang wajib dipahami oleh setiap milenial Muslim sebagai fondasi kehidupan beragama.</p>
+      <div class="accordion fade-up" id="accordion">
+
+        <div class="acc-item open">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <h3><span class="acc-icon">🌙</span> Akidah — Fondasi Keimanan</h3>
+            <div class="acc-arrow">▼</div>
+          </div>
+          <div class="acc-body">
+            <p>Akidah adalah pondasi seluruh amalan Islam. Bagi milenial, pemahaman akidah yang kokoh menjadi benteng dari pengaruh liberalisme, sekularisme, dan pemikiran ateisme yang semakin masif di era digital.</p>
+            <ul>
+              <li>Rukun Iman: Iman kepada Allah, Malaikat, Kitab, Rasul, Hari Akhir, dan Qada-Qadar</li>
+              <li>Tauhid Uluhiyyah, Rububiyyah, dan Asma wa Sifat</li>
+              <li>Cara mempertahankan akidah di tengah arus skeptisisme modern</li>
+              <li>Relevansi akidah dalam menghadapi krisis eksistensial milenial</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <h3><span class="acc-icon">✨</span> Akhlak — Karakter Mulia</h3>
+            <div class="acc-arrow">▼</div>
+          </div>
+          <div class="acc-body">
+            <p>Akhlak mulia adalah cerminan keislaman seseorang. Nabi Muhammad ﷺ diutus untuk menyempurnakan akhlak. Bagi milenial, akhlak menjadi kompas dalam berinteraksi di dunia nyata maupun dunia maya.</p>
+            <ul>
+              <li>Akhlak dalam bermedia sosial: bijak, tidak menyebar hoaks, tidak cyberbullying</li>
+              <li>Etika pergaulan antarlawan jenis sesuai syariat Islam</li>
+              <li>Akhlak profesional dalam dunia kerja dan akademik</li>
+              <li>Membangun empati dan kepedulian sosial sebagai wujud akhlak Islami</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <h3><span class="acc-icon">⚖️</span> Fiqih — Hukum Islam Kontemporer</h3>
+            <div class="acc-arrow">▼</div>
+          </div>
+          <div class="acc-body">
+            <p>Fiqih memberikan panduan praktis dalam beribadah dan bermuamalah. Di era digital, banyak persoalan fiqih kontemporer yang perlu dipahami milenial agar tetap berada dalam koridor syariat.</p>
+            <ul>
+              <li>Fiqih ibadah: shalat, puasa, zakat, dan haji</li>
+              <li>Fiqih muamalah kontemporer: transaksi digital, kripto, investasi saham</li>
+              <li>Hukum konten digital: status foto, video, dan musik dalam Islam</li>
+              <li>Fiqih keluarga: pernikahan, hak dan kewajiban suami-istri di era modern</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <h3><span class="acc-icon">🏛️</span> Sejarah Islam — Inspirasi Peradaban</h3>
+            <div class="acc-arrow">▼</div>
+          </div>
+          <div class="acc-body">
+            <p>Sejarah Islam penuh dengan kisah kejayaan peradaban yang menginspirasi. Memahami sejarah Islam membangkitkan rasa bangga dan motivasi bagi milenial untuk berkontribusi pada kebangkitan Islam masa kini.</p>
+            <ul>
+              <li>Sirah Nabawiyyah: kepemimpinan Nabi Muhammad ﷺ yang relevan hingga kini</li>
+              <li>Masa Khulafaur Rasyidin dan pelajaran kepemimpinan Islam</li>
+              <li>Kejayaan ilmu pengetahuan Islam: Al-Kindi, Ibnu Sina, Al-Khawarizmi</li>
+              <li>Islam di Nusantara: Wali Songo dan kearifan dakwah kontekstual</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <div class="acc-header" onclick="toggleAcc(this)">
+            <h3><span class="acc-icon">📚</span> Al-Quran & Hadits — Sumber Utama</h3>
+            <div class="acc-arrow">▼</div>
+          </div>
+          <div class="acc-body">
+            <p>Al-Quran dan Hadits adalah dua sumber utama ajaran Islam. Milenial perlu dibekali kemampuan memahami, menginterpretasi, dan mengaplikasikan keduanya dalam konteks kehidupan modern.</p>
+            <ul>
+              <li>Cara membaca dan memahami tafsir Al-Quran secara mandiri</li>
+              <li>Mengenali hadits shahih, hasan, dan dhaif di era viral</li>
+              <li>Metode tilawah dan tahfidz yang efektif untuk generasi digital</li>
+              <li>Pesan-pesan Al-Quran tentang ilmu, lingkungan, dan keadilan sosial</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LAYER 5 — QUOTES ============ -->
+  <section id="quotes">
+    <div class="container">
+      <span class="section-label">Inspirasi Islami</span>
+      <h2 class="section-title" style="color:#fff;">Firman Allah & Sabda Nabi ﷺ</h2>
+      <div class="divider"></div>
+      <div class="quotes-grid fade-up">
+
+        <div class="quote-card">
+          <div class="quote-arabic">اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ</div>
+          <div class="quote-line"></div>
+          <p class="quote-translation">"Bacalah dengan (menyebut) nama Tuhanmu yang menciptakan."</p>
+          <div class="quote-source">QS. Al-'Alaq: 1 — Wahyu Pertama</div>
+        </div>
+
+        <div class="quote-card">
+          <div class="quote-arabic">يَرْفَعِ اللّٰهُ الَّذِيْنَ اٰمَنُوْا مِنْكُمْۙ وَالَّذِيْنَ اُوْتُوا الْعِلْمَ دَرَجٰتٍ</div>
+          <div class="quote-line"></div>
+          <p class="quote-translation">"Allah akan meninggikan derajat orang-orang yang beriman di antaramu dan orang-orang yang diberi ilmu pengetahuan beberapa derajat."</p>
+          <div class="quote-source">QS. Al-Mujadilah: 11</div>
+        </div>
+
+        <div class="quote-card">
+          <div class="quote-arabic">طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ</div>
+          <div class="quote-line"></div>
+          <p class="quote-translation">"Menuntut ilmu adalah kewajiban bagi setiap Muslim."</p>
+          <div class="quote-source">HR. Ibnu Majah — Hadits Shahih</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="sep" style="background: var(--bg-main);">
+    <div class="sep-line"></div>
+    <div class="sep-small"></div>
+    <div class="sep-diamond"></div>
+    <div class="sep-small"></div>
+    <div class="sep-line"></div>
+  </div>
+
+  <!-- ============ LAYER 6 — TANTANGAN & SOLUSI ============ -->
+  <section id="tantangan">
+    <div class="container">
+      <span class="section-label">Analisis Kontemporer</span>
+      <h2 class="section-title">Tantangan & Solusi Islam untuk Milenial</h2>
+      <div class="divider"></div>
+      <p class="section-desc">Milenial Muslim menghadapi tantangan unik di era digital. Pendidikan Islam hadir sebagai solusi yang komprehensif.</p>
+      <div class="ts-grid fade-up">
+        <div class="ts-col tantangan-col">
+          <h3>⚠️ Tantangan Milenial Muslim</h3>
+          <ul class="ts-list">
+            <li>
+              <span class="bullet">1</span>
+              <span>Maraknya <strong>hoaks bernuansa agama</strong> yang menyebar di media sosial dan memecah belah umat</span>
+            </li>
+            <li>
+              <span class="bullet">2</span>
+              <span><strong>Radikalisme digital</strong> yang merekrut anak muda melalui konten online yang terlihat moderat</span>
+            </li>
+            <li>
+              <span class="bullet">3</span>
+              <span><strong>Krisis identitas keislaman</strong>: bingung antara tuntutan modernitas dan nilai-nilai agama</span>
+            </li>
+            <li>
+              <span class="bullet">4</span>
+              <span><strong>Hedonisme dan materialisme</strong> yang difasilitasi budaya konsumerisme digital</span>
+            </li>
+            <li>
+              <span class="bullet">5</span>
+              <span><strong>Lemahnya literasi agama</strong> sehingga mudah terpengaruh tafsir-tafsir yang menyimpang</span>
+            </li>
+          </ul>
+        </div>
+        <div class="ts-col solusi-col">
+          <h3>✅ Solusi Pendidikan Islam</h3>
+          <ul class="ts-list">
+            <li>
+              <span class="bullet">✓</span>
+              <span>Menumbuhkan <strong>literasi media Islami</strong> — kemampuan memfilter informasi berdasarkan kaidah tabayyun dalam Al-Quran</span>
+            </li>
+            <li>
+              <span class="bullet">✓</span>
+              <span>Memperkuat <strong>akidah dan wawasan kebangsaan</strong> untuk menangkal narasi ekstremis sejak dini</span>
+            </li>
+            <li>
+              <span class="bullet">✓</span>
+              <span>Menghadirkan <strong>Islam yang ramah dan kontekstual</strong> — menunjukkan bahwa Islam dan modernitas bisa berjalan bersama</span>
+            </li>
+            <li>
+              <span class="bullet">✓</span>
+              <span>Menanamkan nilai <strong>zuhud dan qanaah</strong> sebagai penyeimbang gaya hidup konsumtif</span>
+            </li>
+            <li>
+              <span class="bullet">✓</span>
+              <span>Mengintegrasikan <strong>kajian ulama otoritatif</strong> ke dalam platform digital yang dekat dengan keseharian milenial</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LAYER 7 — FOOTER ============ -->
+  <footer id="footer">
+    <div class="footer-arabic">وَقُلْ رَّبِّ زِدْنِيْ عِلْمًا</div>
+    <div class="footer-logo-text">Islam Milenial</div>
+    <div class="footer-tagline">Ilmu sebagai bekal, Iman sebagai pondasi, Akhlak sebagai mahkota.</div>
+    <div class="footer-divider"></div>
+    <div class="footer-info container">
+      <div class="footer-info-item">
+        <div class="fi-label">Disusun oleh</div>
+        <div class="fi-value">Aksya Nayla Fitriana</div>
+        <div class="fi-label" style="margin-top:8px;">NIM</div>
+        <div class="fi-value">K3525047</div>
+      </div>
+      <div class="footer-info-item">
+        <div class="fi-label">Mata Kuliah</div>
+        <div class="fi-value">Pendidikan Agama Islam</div>
+        <div class="fi-label" style="margin-top:8px;">Jenis Tugas</div>
+        <div class="fi-value">Ujian Akhir Semester (UAS)</div>
+      </div>
+      <div class="footer-info-item">
+        <div class="fi-label">Universitas</div>
+        <div class="fi-value">Universitas Sebelas Maret</div>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      © 2025 Aksya Nayla Fitriana · K3525047 · Universitas Sebelas Maret &nbsp;|&nbsp; Semoga Bermanfaat 🤲
+    </div>
+  </footer>
+
+  <!-- ============ JAVASCRIPT ============ -->
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Mobile nav toggle
+    function toggleNav() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => {
+        document.getElementById('navLinks').classList.remove('open');
+      });
+    });
+
+    // Accordion
+    function toggleAcc(header) {
+      const item = header.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.acc-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // Fade-up on scroll (IntersectionObserver)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
